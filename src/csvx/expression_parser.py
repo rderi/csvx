@@ -7,24 +7,28 @@ _expr_grammar = r"""
               | ESCAPED_STRING
               | cell_specifier
               | formula_variable
-              | "(" expression ")"
-              | UNARY_OP expression
               | binary_operation
+              | UNARY_OP expression
               | function_call
 
     formula_variable: IDENTIFIER
-    binary_operation: comparison_expr
-    comparison_expr: arithmetic_expr (COMPARISON_OP arithmetic_expr)*
-    arithmetic_expr: term (ARITHMETIC_OP term)*
-    term: power_expr (MUL_OP power_expr)*
-    power_expr: [NUMBER | cell_specifier] (POWER_OP [NUMBER|cell_specifier])* 
+    binary_operation: comparison_expr | arithmetic_expr
+    comparison_expr: expression COMPARISON_OP expression
+    arithmetic_expr: term
+                   | arithmetic_expr ARITHMETIC_OP term
+    term: power_expr
+        | term MUL_OP power_expr 
+    power_expr: atom
+              | power_expr POWER_OP atom 
+    atom: NUMBER 
+        | cell_specifier
+        | ("(" expression ")")
     function_call: IDENTIFIER "(" expression_list ")"
     expression_list: parameter ("," parameter)*
     parameter: expression
     cell_specifier: "[" cell_range_address "]"
     cell_range_address: cell_address ( ":" cell_address )?
     cell_address: LETTER+ DIGIT+
-
     COMPARISON_OP: "<" | ">" | "<=" | ">=" | "===" | "!="
     ARITHMETIC_OP: "+" | "-"
     MUL_OP: "*" | "/"
@@ -39,7 +43,7 @@ _expr_grammar = r"""
     %import common.DIGIT
     %import common.WS 
     %ignore WS
-"""
+    """
 
 class ExpressionParser:
     def __init__(self):
