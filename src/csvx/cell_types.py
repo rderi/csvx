@@ -33,7 +33,16 @@ class Logical(Value):
             raise ValueError(f'Expected boolean, got {value}')
         super().__init__(value)
 
+#For now, not an actual value stored in a cell, but an internal value passed to the DSL's functions
+class List(Value):
+    def __init__(self, value):
+        if not isinstance(value, list):
+            raise ValueError(f'Expected list, got {value}')
+        super().__init__([detect_literal_type(v) for v in value])
+
 def detect_literal_type(value):
+    if isinstance(value, Value):
+        return value
     try:
         return Number(value)
     except ValueError:

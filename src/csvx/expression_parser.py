@@ -24,7 +24,7 @@ _expr_grammar = r"""
         | cell_specifier
         | ("(" expression ")")
     function_call: IDENTIFIER "(" expression_list ")"
-    expression_list: parameter ("," parameter)*
+    expression_list: parameter (";" parameter)*
     parameter: expression
     cell_specifier: "[" cell_range_address "]"
     cell_range_address: cell_address ( ":" cell_address )?

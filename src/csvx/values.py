@@ -18,7 +18,9 @@ class Formula(Cell):
 
     
     def set_result(self, result):
-        self.value = types.detect_literal_type(result)
+        if not isinstance(result, types.Value):
+            result = types.detect_literal_type(result)
+        self.value = result
     
     def __str__(self):
         if hasattr(self, 'value'):

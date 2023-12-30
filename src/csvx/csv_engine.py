@@ -4,11 +4,13 @@ from expression_parser import ExpressionParser
 from values import Formula, Literal
 import cell_types as types
 from expression_evaluator import eval_expression
+import functions
 from lark import Tree
 
 class CsvEngine:
     def __init__(self, input):
         self.expression_parser = ExpressionParser()
+        self.function_engine = functions.FunctionEngine(functions.standard_fns)
         self.input = StringIO(input)
         self.contents = self._read_csv()
         self._parse_expressions()
