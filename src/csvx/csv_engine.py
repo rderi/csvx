@@ -53,7 +53,7 @@ class CsvEngine:
 
     #Converts a1 notation to row and column index
     #E.g., AA3 -> (2, 26)
-    def _a1_to_idx(a1):
+    def _a1_to_idx(self, a1):
         a1 = a1.upper()
         column = 0
         for i, c in enumerate(a1):
@@ -71,7 +71,7 @@ class CsvEngine:
         cell = self.contents[row][col]
         if not hasattr(cell, 'value'):
             raise ValueError(f'Cell {row}, {col} has no value yet.')
-        return cell.value
+        return cell.value.value #TODO: fix this messyness
 
 
 
